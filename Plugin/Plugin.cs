@@ -87,38 +87,7 @@ namespace Plugin
             }
         }
     }
-    [CommandHandler(typeof(RemoteAdminCommandHandler))]
-    public class CzyBypass : ICommand
-    {
-        public string Command => "CzyBypass";
 
-        public string[] Aliases => new[] { "czbp" };
-
-        public string Description => "Sprawdza czy masz bypass";
-
-        public bool SanitizeResponse { get; } = true;
-        public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
-        {
-            if (sender is PlayerCommandSender playerSender)
-            {
-                Player player = Player.Get(playerSender);
-
-                if (player.IsBypassModeEnabled == true)
-                {
-                    response = "Masz aktywnego bypassa.";
-                    return true;
-                }
-                else
-                {
-                    response = "Nie masz bypassa.";
-                    return true;
-                }
-
-            }
-            response = null;
-            return false;
-        }
-    }
     [CommandHandler(typeof(ClientCommandHandler))]
     public class Hackowanie : ICommand
     {
