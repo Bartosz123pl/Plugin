@@ -1,22 +1,10 @@
-﻿using static Plugin.Event_Handlers.Playerskibidi;
 using CommandSystem;
 using Exiled.API.Features;
-using Exiled.Loader;
-using Exiled.Events.EventArgs.Player;
 using System;
-using Exiled.Events.Handlers;
-using Plugin.Event_Handlers;
-using PluginAPI.Core;
 using System.Collections.Generic;
-using System.Linq;
 using RemoteAdmin;
 using Player = Exiled.API.Features.Player;
-using static UnityEngine.GraphicsBuffer;
-using UnityEngine;
-using Exiled.CreditTags.Features;
 using Exiled.API.Enums;
-using Exiled.API.Features.Doors;
-using Exiled.API.Features.Roles;
 using PlayerRoles;
 using MEC;
 
@@ -46,6 +34,8 @@ namespace Plugin
             Exiled.Events.Handlers.Player.ChangingRole += Event_Handlers.Playerskibidi.OnChangingRole;
             Exiled.Events.Handlers.Player.Died += Event_Handlers.Playerskibidi.OnDeath;
             Exiled.Events.Handlers.Player.TriggeringTesla += Event_Handlers.Playerskibidi.OnTesla;
+            Exiled.Events.Handlers.Player.Spawned += Event_Handlers.Playerskibidi.OnCISpawned;
+
 
 
             base.OnEnabled();
@@ -58,11 +48,48 @@ namespace Plugin
             Exiled.Events.Handlers.Player.ChangingRole -= Event_Handlers.Playerskibidi.OnChangingRole;
             Exiled.Events.Handlers.Player.Died -= Event_Handlers.Playerskibidi.OnDeath;
             Exiled.Events.Handlers.Player.TriggeringTesla -= Event_Handlers.Playerskibidi.OnTesla;
+            Exiled.Events.Handlers.Player.Spawned -= Event_Handlers.Playerskibidi.OnCISpawned;
 
             base.OnDisabled();
         }
     }
-        [CommandHandler(typeof(RemoteAdminCommandHandler))]
+
+    [CommandHandler(typeof(RemoteAdminCommandHandler))]
+    public class Hackowansko : ICommand
+    {
+        public string Command => "hack";
+
+        public string[] Aliases => new[] { "hck" };
+
+        public string Description => "Hackuje C.A.S.S.I.E na rzecz Rebelii Chaosu";
+
+        public bool SanitizeResponse { get; } = true;
+        public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
+        {
+            if (Plugin.Instance.CICASSIE == false)
+            {
+                Plugin.Instance.CICASSIE = true;
+                foreach (var lplayer in Player.List)
+                {
+                    if (lplayer.Role.Team == Team.ChaosInsurgency)
+                    {
+                        lplayer.IsBypassModeEnabled = true;
+
+                    }
+                }
+                response = "Pomyślnie shackowano C.A.S.S.I.E";
+                return true;
+
+            }
+            else
+            {
+                response = "C.A.S.S.I.E jest, już obecnie, kontrolowane przez Rebelię Chaosu";
+                return true;
+            }
+        }
+    }
+
+    [CommandHandler(typeof(RemoteAdminCommandHandler))]
     public class Unhackowansko : ICommand
     {
         public string Command => "unhack";
@@ -95,40 +122,7 @@ namespace Plugin
             }
         }
     }
- [CommandHandler(typeof(RemoteAdminCommandHandler))]
- public class Hackowansko : ICommand
- {
-     public string Command => "hack";
 
-     public string[] Aliases => new[] { "hck" };
-
-     public string Description => "Hackuje C.A.S.S.I.E na rzecz Rebelii Chaosu";
-
-     public bool SanitizeResponse { get; } = true;
-     public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
-     {
-         if (Plugin.Instance.CICASSIE == false)
-         {
-             Plugin.Instance.CICASSIE = true;
-             foreach (var lplayer in Player.List)
-             {
-                 if (lplayer.Role.Team == Team.ChaosInsurgency)
-                 {
-                     lplayer.IsBypassModeEnabled = true;
-
-                 }
-             }
-             response = "Pomyślnie shackowano C.A.S.S.I.E";
-             return true;
-
-         }
-         else
-         {
-             response = "C.A.S.S.I.E jest, już obecnie, kontrolowane przez Rebelię Chaosu";
-             return true;
-         }
-     }
- }
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     public class KontrolaCASSIE : ICommand
     {
@@ -167,7 +161,7 @@ namespace Plugin
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
 
-            if (sender is PlayerCommandSender playerSender)
+            if (sender is ICommandSender playerSender)
             {
                 Player player = Player.Get(playerSender);
                 if (Plugin.Instance.CICASSIE == false)
@@ -195,6 +189,7 @@ namespace Plugin
                     Plugin.Instance.czyhack = true;
                     Timing.RunCoroutine(Hackuj(player, true));
                     response = "Rozpoczęto przejmowanie systemu...";
+                    return true;
                 }
                 else
                 {
@@ -205,8 +200,17 @@ namespace Plugin
                     }
                     if (player.Role.Type != RoleTypeId.NtfSpecialist)
                     {
-                        response = "Nie masz wystarczających umiejętności aby to zrobić";
-                        return false;
+                        if(player.Role.Team == Team.ChaosInsurgency)
+                        {
+                            response = "Systemy są już przejęte";
+                            return false;
+                        }
+                        else
+                        {
+                            response = "Nie masz wystarczających umiejętności aby to zrobić";
+                            return false;
+                        }
+
                     }
                     if (player.CurrentItem == null || player.CurrentItem.Type != ItemType.KeycardContainmentEngineer)
                     {
@@ -221,10 +225,15 @@ namespace Plugin
                     Plugin.Instance.czyhack = true;
                     Timing.RunCoroutine(Hackuj(player, false));
                     response = "Rozpoczęto przejmowanie systemu...";
+                    return true;
                 }
 
             }
-            response = "SKIBIDI";
+            else
+            {
+
+            }
+            response = null;
             return false;
         }
         private IEnumerator<float> Hackuj(Player player, bool przejmuje)
@@ -239,24 +248,31 @@ namespace Plugin
                 switch (liczba)
                 {
                     case 1:
-
+                        player.Broadcast(5, "1a");
                         break;
                     case 2:
-
+                        player.Broadcast(5, "2a");
                         break;
                     case 3:
-
+                        player.Broadcast(5, "3a");
                         break;
                     case 4:
-
+                        player.Broadcast(5, "4a");
                         break;
                     case 5:
-
+                        player.Broadcast(5, "5a");
                         break;
                 }
                 Plugin.Instance.czyhack = false;
                 Plugin.Instance.CICASSIE = true;
+                foreach (var lplayer in Player.List)
+                {
+                    if (lplayer.Role.Team == Team.ChaosInsurgency)
+                    {
+                        lplayer.IsBypassModeEnabled = true;
 
+                    }
+                }
             }
             else
             {
@@ -264,23 +280,31 @@ namespace Plugin
                 switch (liczba)
                 {
                     case 1:
-
+                        player.Broadcast(5, "1b");
                         break;
                     case 2:
-
+                        player.Broadcast(5, "2b");
                         break;
                     case 3:
-
+                        player.Broadcast(5, "3b");
                         break;
                     case 4:
-
+                        player.Broadcast(5, "4b");
                         break;
                     case 5:
-
+                        player.Broadcast(5, "5b");
                         break;
                 }
                 Plugin.Instance.czyhack = false;
                 Plugin.Instance.CICASSIE = false;
+                foreach (var lplayer in Player.List)
+                {
+                    if (lplayer.Role.Team == Team.ChaosInsurgency)
+                    {
+                        lplayer.IsBypassModeEnabled = false;
+
+                    }
+                }
             }
 
 
