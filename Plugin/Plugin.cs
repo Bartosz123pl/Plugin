@@ -62,7 +62,73 @@ namespace Plugin
             base.OnDisabled();
         }
     }
+        [CommandHandler(typeof(RemoteAdminCommandHandler))]
+    public class Unhackowansko : ICommand
+    {
+        public string Command => "unhack";
 
+        public string[] Aliases => new[] { "uhck" };
+
+        public string Description => "Przywraca kontrolę nad systemem C.A.S.S.I.E Fundacji SCP";
+
+        public bool SanitizeResponse { get; } = true;
+        public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
+        {
+            if (Plugin.Instance.CICASSIE == false)
+            {
+                response = "C.A.S.S.I.E jest, już obecnie, kontrolowane przez siły fundacji";
+                return true;
+            }
+            else
+            {
+                Plugin.Instance.CICASSIE = false;
+                foreach (var lplayer in Player.List)
+                {
+                    if (lplayer.Role.Team == Team.ChaosInsurgency)
+                    {
+                        lplayer.IsBypassModeEnabled = false;
+
+                    }
+                }
+                response = "Pomyślnie odhackowano C.A.S.S.I.E";
+                return true;
+            }
+        }
+    }
+ [CommandHandler(typeof(RemoteAdminCommandHandler))]
+ public class Hackowansko : ICommand
+ {
+     public string Command => "hack";
+
+     public string[] Aliases => new[] { "hck" };
+
+     public string Description => "Hackuje C.A.S.S.I.E na rzecz Rebelii Chaosu";
+
+     public bool SanitizeResponse { get; } = true;
+     public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
+     {
+         if (Plugin.Instance.CICASSIE == false)
+         {
+             Plugin.Instance.CICASSIE = true;
+             foreach (var lplayer in Player.List)
+             {
+                 if (lplayer.Role.Team == Team.ChaosInsurgency)
+                 {
+                     lplayer.IsBypassModeEnabled = true;
+
+                 }
+             }
+             response = "Pomyślnie shackowano C.A.S.S.I.E";
+             return true;
+
+         }
+         else
+         {
+             response = "C.A.S.S.I.E jest, już obecnie, kontrolowane przez Rebelię Chaosu";
+             return true;
+         }
+     }
+ }
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     public class KontrolaCASSIE : ICommand
     {
