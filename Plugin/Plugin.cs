@@ -7,6 +7,7 @@ using Player = Exiled.API.Features.Player;
 using Exiled.API.Enums;
 using PlayerRoles;
 using MEC;
+using UnityEngine;
 
 
 
@@ -244,6 +245,25 @@ namespace Plugin
 
             if (przejmuje)
             {
+                float duration = 5f;
+                Vector3 startPosition = player.Position;
+                while (duration > 0f)
+                {
+                    if (player.CurrentItem == null || player.CurrentItem.Type != ItemType.KeycardChaosInsurgency)
+                    {
+                        Plugin.Instance.czyhack = false;
+                        yield break;
+                    }
+
+                    if (Vector3.Distance(player.Position, startPosition) > 2f)
+                    {
+                        Plugin.Instance.czyhack = false;
+                        yield break;
+                    }
+
+                    duration -= 0.2f;
+                    yield return Timing.WaitForSeconds(0.2f);
+                }
                 yield return Timing.WaitForSeconds(5f);
                 switch (liczba)
                 {
@@ -276,6 +296,25 @@ namespace Plugin
             }
             else
             {
+                float duration = 5f;
+                Vector3 startPosition = player.Position;
+                while (duration > 0f)
+                {
+                    if (player.CurrentItem == null || player.CurrentItem.Type != ItemType.KeycardContainmentEngineer)
+                    {
+                        Plugin.Instance.czyhack = false;
+                        yield break;
+                    }
+
+                    if (Vector3.Distance(player.Position, startPosition) > 2f)
+                    {
+                        Plugin.Instance.czyhack = false;
+                        yield break;
+                    }
+
+                    duration -= 0.2f;
+                    yield return Timing.WaitForSeconds(0.2f);
+                }
                 yield return Timing.WaitForSeconds(5f);
                 switch (liczba)
                 {
