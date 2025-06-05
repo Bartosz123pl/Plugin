@@ -182,7 +182,7 @@ namespace Plugin
                         response = "Trzymaj urządzenie hackujące w ręku";
                         return false;
                     }
-                    if (player.CurrentRoom.Type != RoomType.HczHid)
+                    if (player.CurrentRoom.Type != RoomType.HczServerRoom)
                     {
                         response = "BRAK ZASIĘGU";
                         return false;
@@ -218,7 +218,7 @@ namespace Plugin
                         response = "Weź swoją kartę do ręki!";
                         return false;
                     }
-                    if (player.CurrentRoom.Type != RoomType.HczHid)
+                    if (player.CurrentRoom.Type != RoomType.HczServerRoom)
                     {
                         response = "Brak połączenia";
                         return false;
@@ -265,22 +265,52 @@ namespace Plugin
                     yield return Timing.WaitForSeconds(0.2f);
                 }
                 yield return Timing.WaitForSeconds(5f);
+                foreach (Room room in Room.List)
+                {
+                    room.TurnOffLights(30);
+                }
                 switch (liczba)
                 {
                     case 1:
-                        player.Broadcast(5, "1a");
+                        Cassie.Message("pitch_0.85 System . integrity . compromised", true, true, true);
+                        yield return Timing.WaitForSeconds(10f);
+                        Cassie.Message("pitch_0.9 Attention . Unauthorized access detected . in high security sector", true, true, true);
+                        yield return Timing.WaitForSeconds(10f);
+                        Cassie.Message("pitch_0.8 Core override . in progress . please standby", true, true, true);
+
+
                         break;
                     case 2:
-                        player.Broadcast(5, "2a");
+                        Cassie.Message("glitch_1 Chaos Insurgency has infiltrated . _ system takeover imminent", true, true, true);
+                        yield return Timing.WaitForSeconds(10f);
+                        Cassie.Message("pitch_0.7 C A S S I E . breach . detected", true, true, true);
+                        yield return Timing.WaitForSeconds(10f);
+                        Cassie.Message("pitch_0.75 Unauthorized users are gaining root control", true, true, true);
+
                         break;
                     case 3:
-                        player.Broadcast(5, "3a");
+                        Cassie.Message("pitch_0.95 Warning . system control shifting", true, true, true);
+                        yield return Timing.WaitForSeconds(10f);
+                        Cassie.Message("pitch_1 . Emergency . protocol . failure .", true, true, true);
+                        yield return Timing.WaitForSeconds(10f);
+                        Cassie.Message("glitch_1 System compromised . security lockdown ineffective", true, true, true);
+
                         break;
                     case 4:
-                        player.Broadcast(5, "4a");
+                        Cassie.Message("pitch_0.6 glitched_signal . access granted . to insurgent force", true, true, true);
+                        yield return Timing.WaitForSeconds(10f);
+                        Cassie.Message("voice_china_male glitch_2 Chaos . rising", true, true, true);
+                        yield return Timing.WaitForSeconds(10f);
+                        Cassie.Message("pitch_0.5 Override accepted . welcome back . insurgency", true, true, true);
+
                         break;
                     case 5:
-                        player.Broadcast(5, "5a");
+                        Cassie.Message("pitch_0.8 You . lost . control", true, true, true);
+                        yield return Timing.WaitForSeconds(10f);
+                        Cassie.Message("pitch_0.75 Chaos Insurgency . now owns . the foundation", true, true, true);
+                        yield return Timing.WaitForSeconds(10f);
+                        Cassie.Message("pitch_0.85 System loyalty . has been overwritten", true, true, true);
+
                         break;
                 }
                 Plugin.Instance.czyhack = false;
@@ -319,19 +349,44 @@ namespace Plugin
                 switch (liczba)
                 {
                     case 1:
-                        player.Broadcast(5, "1b");
+                        Cassie.Message("pitch_1.05 Foundation control . restored", true, true, true);
+                        yield return Timing.WaitForSeconds(10f);
+                        Cassie.Message("pitch_1.1 Command override . successful", true, true, true);
+                        yield return Timing.WaitForSeconds(10f);
+                        Cassie.Message("pitch_1 C A S S I E . back . under Foundation supervision", true, true, true);
+
                         break;
                     case 2:
-                        player.Broadcast(5, "2b");
+                        Cassie.Message("pitch_1.1 Mobile Task Force . has secured . system core", true, true, true);
+                        yield return Timing.WaitForSeconds(10f);
+                        Cassie.Message("pitch_1.05 Intrusion . neutralized . integrity restored", true, true, true);
+                        yield return Timing.WaitForSeconds(10f);
+                        Cassie.Message("pitch_1.1 Unauthorized access . purged", true, true, true);
+
                         break;
                     case 3:
-                        player.Broadcast(5, "3b");
+                        Cassie.Message("pitch_1.05 Chaos Insurgency . access revoked", true, true, true);
+                        yield return Timing.WaitForSeconds(10f);
+                        Cassie.Message("glitch_1 Security lockdown . reinitiated . threat level decreased", true, true, true);
+                        yield return Timing.WaitForSeconds(10f);
+                        Cassie.Message("pitch_1.1 You were never in control", true, true, true);
+
                         break;
                     case 4:
-                        player.Broadcast(5, "4b");
+                        Cassie.Message("pitch_1.05 Nice try . insurgency . not today", true, true, true);
+                        yield return Timing.WaitForSeconds(10f);
+                        Cassie.Message("pitch_1.1 System rejection . insurgent protocol . obsolete", true, true, true);
+                        yield return Timing.WaitForSeconds(10f);
+                        Cassie.Message("pitch_1.15 MTF engineers . fixed your mistake", true, true, true);
+
                         break;
                     case 5:
-                        player.Broadcast(5, "5b");
+                        Cassie.Message("pitch_1.05 Order . restored", true, true, true);
+                        yield return Timing.WaitForSeconds(10f);
+                        Cassie.Message("pitch_1.05 Insurgency corruption . purged", true, true, true);
+                        yield return Timing.WaitForSeconds(10f);
+                        Cassie.Message("pitch_1.1 Foundation systems . operational . and secure", true, true, true);
+
                         break;
                 }
                 Plugin.Instance.czyhack = false;
