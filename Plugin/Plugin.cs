@@ -267,7 +267,7 @@ namespace Plugin
                 yield return Timing.WaitForSeconds(5f);
                 foreach (Room room in Room.List)
                 {
-                    room.TurnOffLights(30);
+                    room.TurnOffLights(30f);
                 }
                 switch (liczba)
                 {
@@ -346,6 +346,10 @@ namespace Plugin
                     yield return Timing.WaitForSeconds(0.2f);
                 }
                 yield return Timing.WaitForSeconds(5f);
+                foreach (Room room in Room.List)
+                {
+                    room.TurnOffLights(30f);
+                }
                 switch (liczba)
                 {
                     case 1:
