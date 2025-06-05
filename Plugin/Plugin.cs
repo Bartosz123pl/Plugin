@@ -245,7 +245,7 @@ namespace Plugin
 
             if (przejmuje)
             {
-                float duration = 5f;
+                float duration = 25f;
                 Vector3 startPosition = player.Position;
                 while (duration > 0f)
                 {
@@ -326,7 +326,7 @@ namespace Plugin
             }
             else
             {
-                float duration = 5f;
+                float duration = 25f;
                 Vector3 startPosition = player.Position;
                 while (duration > 0f)
                 {
